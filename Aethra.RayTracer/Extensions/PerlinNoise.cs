@@ -31,8 +31,8 @@ namespace Aethra.RayTracer.Extensions
         private static float Interpolate(float x, float y, float a)
         {
             var b = 1 - a;
-            var fac1 = (float) (3 * b * b - 2 * b * b * b);
-            var fac2 = (float) (3 * a * a - 2 * a * a * a);
+            var fac1 = 3 * b * b - 2 * b * b * b;
+            var fac2 = 3 * a * a - 2 * a * a * a;
             return x * fac1 + y * fac2; //add the weighted factors
         }
 

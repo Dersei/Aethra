@@ -99,7 +99,7 @@ namespace Aethra.RayTracer.Basic.Textures
                     if (mirrorY) indexX = data.Width - 1 - x;
                     if (mirrorX) indexY = data.Height - 1 - y;
                     pixels[indexX, indexY] =
-                        FloatColor.FromRGBA(row[x * pixelSize + 2], row[x * pixelSize + 1],
+                        FloatColor.FromRgba(row[x * pixelSize + 2], row[x * pixelSize + 1],
                             row[x * pixelSize],
                             row[x * pixelSize + 3]);
                 }
@@ -135,7 +135,7 @@ namespace Aethra.RayTracer.Basic.Textures
                     if (mirrorY) indexX = data.Width - 1 - x;
                     if (mirrorX) indexY = data.Height - 1 - y;
                     pixels[indexX, indexY] =
-                        FloatColor.FromRGBA(
+                        FloatColor.FromRgba(
                             row[x * pixelSize + 2], row[x * pixelSize + 1],
                             row[x * pixelSize],
                             row[x * pixelSize + 3]);

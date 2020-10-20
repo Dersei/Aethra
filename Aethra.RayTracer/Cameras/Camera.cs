@@ -41,7 +41,7 @@ namespace Aethra.RayTracer.Cameras
         private readonly float _pixelWidth;
         private readonly float _pixelHeight;
 
-        private void CalculateUVW()
+        private void CalculateUvw()
         {
             W = -Direction;
             U = Up.Cross(-W);
@@ -58,7 +58,7 @@ namespace Aethra.RayTracer.Cameras
             Up = up;
             _pixelWidth = 2.0f / renderTarget.Width;
             _pixelHeight = 2.0f / renderTarget.Height;
-            CalculateUVW();
+            CalculateUvw();
         }
 
         public FloatColor CalculateColor(Ray ray, int currentDepth)
@@ -116,10 +116,10 @@ namespace Aethra.RayTracer.Cameras
                             MathF.Pow(color.G, 1.0f / 2.2f),
                             MathF.Pow(color.B, 1.0f / 2.2f)
                         ),
-                        ColorSpace.SRGB => new FloatColor(
-                            ConvertToSRGB(color.R),
-                            ConvertToSRGB(color.G),
-                            ConvertToSRGB(color.B)
+                        ColorSpace.Srgb => new FloatColor(
+                            ConvertToSRgb(color.R),
+                            ConvertToSRgb(color.G),
+                            ConvertToSRgb(color.B)
                         ),
                         _ => FloatColor.Error
                     };
@@ -134,7 +134,7 @@ namespace Aethra.RayTracer.Cameras
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float ConvertToSRGB(float value)
+        private static float ConvertToSRgb(float value)
         {
             return value > 0.0031308f ? 1.055f * MathF.Pow(value, 1.0f / 2.4f) - 0.055f : 12.92f * value;
         }
@@ -186,6 +186,6 @@ namespace Aethra.RayTracer.Cameras
     {
         Linear,
         Gamma,
-        SRGB
+        Srgb
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using Aethra.RayTracer.Basic;
-using Aethra.RayTracer.Rendering;
+﻿using Aethra.RayTracer.Basic;
 
 namespace Aethra.RayTracer.Lighting
 {

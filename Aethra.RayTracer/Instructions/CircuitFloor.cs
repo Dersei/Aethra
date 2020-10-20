@@ -14,7 +14,7 @@ using Aethra.RayTracer.Samplers.Generators;
 
 namespace Aethra.RayTracer.Instructions
 {
-    public class NinthInstruction : IInstruction
+    public class CircuitFloor : IInstruction
     {
         public Scene? Scene { private set; get; }
         public uint[,]? Result => Scene?.Camera.RenderTarget.Pixels;
@@ -43,7 +43,7 @@ namespace Aethra.RayTracer.Instructions
             var greenWallMaterial = new PhongMaterial(FloatColor.Green, 1, 0, 50, 1);
             // var blueMaterial = new PhongMaterial(FloatColor.Blue, 0.7f, 8, 50, 1);
             
-            var circuitryMaterial = new PBRMaterial(FloatColor.White,
+            var circuitryMaterial = new PbrMaterial(FloatColor.White,
                 Texture.LoadFrom(@"_Resources/Textures/circuitry-albedo.png").ToInfo(0.25f),
                 Texture.LoadFrom(@"_Resources/Textures/circuitry-emission.png").ToInfo(0.25f),
                 Texture.LoadFrom(@"_Resources/Textures/circuitry-smoothness.png").ToInfo(0.25f),

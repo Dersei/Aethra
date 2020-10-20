@@ -14,7 +14,7 @@ using Aethra.RayTracer.Samplers.Generators;
 
 namespace Aethra.RayTracer.Instructions
 {
-    public class SeventhInstruction : IInstruction
+    public class BoxWithSpheres : IInstruction
     {
         public Scene? Scene { private set; get; }
         public uint[,]? Result => Scene?.Camera.RenderTarget.Pixels;
@@ -36,14 +36,13 @@ namespace Aethra.RayTracer.Instructions
             var objects = new List<IHittable>();
 
             var reflectiveMaterial = new ReflectiveMaterial(FloatColor.White, 0.4f, 1, 300, 1f);
-            var transparentMaterial = new TransparentMaterial(FloatColor.White, 0.1f, 0, 1, 3, 1);
-            // var redWallMaterial = new PhongMaterial(FloatColor.Red, 1, 0, 50, 1);
-            // var greenWallMaterial = new PhongMaterial(FloatColor.Green, 1, 0, 50, 1);
-            // var whiteWallMaterial = new PhongMaterial(FloatColor.White, 1, 0, 50, 1);
-            // var blueMaterial = new PhongMaterial(FloatColor.Blue, 0.7f, 8, 50, 1);
+            var transparentMaterial = new TransparentMaterial(FloatColor.White, 0.1f, 0, 0.3f, 1.05f, 0.9f);
+            //var redWallMaterial = new PhongMaterial(FloatColor.Red, 1, 0, 50, 1);
+            //var greenWallMaterial = new PhongMaterial(FloatColor.Green, 1, 0, 50, 1);
+            //var whiteWallMaterial = new PhongMaterial(FloatColor.White, 1, 0, 50, 1);
             var reflectiveFloor = new ReflectiveMaterial(FloatColor.White, 0.4f, 1, 300, 0.5f);
 
-            var circuitryMaterial = new PBRMaterial(FloatColor.White,
+            var circuitryMaterial = new PbrMaterial(FloatColor.White,
                 Texture.LoadFrom(@"_Resources/Textures/circuitry-albedo.png").ToInfo(3),
                 Texture.LoadFrom(@"_Resources/Textures/circuitry-emission.png").ToInfo(3),
                 Texture.LoadFrom(@"_Resources/Textures/circuitry-smoothness.png").ToInfo(3),
@@ -56,7 +55,7 @@ namespace Aethra.RayTracer.Instructions
                 AmbientPower = 1
             };
 
-            var sphereTextureMaterial = new PBRMaterial(FloatColor.White,
+            var sphereTextureMaterial = new PbrMaterial(FloatColor.White,
                 Texture.LoadFrom(@"_Resources/Textures/lava-albedo-smoothness-green.png").ToInfo(3),
                 Texture.LoadFrom(@"_Resources/Textures/lava-emission-green.png").ToInfo(3),
                 Texture.LoadFrom(@"_Resources/Textures/lava-albedo-smoothness.png").ToInfo(3),
@@ -69,26 +68,52 @@ namespace Aethra.RayTracer.Instructions
                 AmbientPower = 1
             };
 
-            var reflectiveSphere =   new Sphere(new Vector3(-0.5f, -1.5f, 3), 0.5f, reflectiveMaterial);
-            var transparentSphere =  new Sphere(new Vector3(0.5f, -1.5f, 3), 0.5f, transparentMaterial);
-            var textureSphere =      new Sphere(new Vector3(-1.5f, -1.5f, 3), 0.5f, sphereTextureMaterial);
-            var specialSphere =      new Sphere(new Vector3(1.5f, -1.5f, 3), 0.5f, circuitryMaterial);
-            
-            var reflectiveSphere1 =  new Sphere(new Vector3(1.5f, -0.5f, 3), 0.5f, reflectiveMaterial);
-            var transparentSphere1 = new Sphere(new Vector3(-1.5f, -0.5f, 3), 0.5f, transparentMaterial);
-            var textureSphere1 =     new Sphere(new Vector3(-0.5f, -0.5f, 3), 0.5f, sphereTextureMaterial);
-            var specialSphere1 =     new Sphere(new Vector3(0.5f, -0.5f, 3), 0.5f, circuitryMaterial);
+            // var bacteriaMaterial = new PBRMaterial(FloatColor.White,
+            //     Texture.LoadFrom(@"_Resources/Textures/Bacteria_001_COLOR.jpg").ToInfo(3),
+            //     Texture.LoadFrom(@"_Resources/Textures/Bacteria_001_COLOR.jpg").ToInfo(3),
+            //     Texture.LoadFrom(@"_Resources/Textures/Bacteria_001_SPEC.jpg").ToInfo(3),
+            //     Texture.LoadFrom(@"_Resources/Textures/Bacteria_001_NORM.jpg").ToInfo(3))
+            // {
+            //     EmissionFactor = 2,
+            //     DiffuseCoefficient = 1,
+            //     Specular = 10,
+            //     SpecularExponent = 50,
+            //     AmbientPower = 1
+            // };
 
-            var reflectiveSphere2 =  new Sphere(new Vector3(-1.5f, 0.5f, 3), 0.5f, reflectiveMaterial);
+            // var abstractMaterial = new PBRMaterial(FloatColor.White,
+            //     Texture.LoadFrom(@"_Resources/Textures/Abstract_010_basecolor_green.jpg").ToInfo(3),
+            //     Texture.LoadFrom(@"_Resources/Textures/Abstract_010_basecolor_green.jpg").ToInfo(3),
+            //     Texture.LoadFrom(@"_Resources/Textures/Abstract_010_roughness.jpg").ToInfo(3),
+            //     Texture.LoadFrom(@"_Resources/Textures/Abstract_010_normal.jpg").ToInfo(3))
+            // {
+            //     EmissionFactor = 2,
+            //     DiffuseCoefficient = 1,
+            //     Specular = 10,
+            //     SpecularExponent = 50,
+            //     AmbientPower = 1
+            // };
+
+            var reflectiveSphere = new Sphere(new Vector3(-0.5f, -1.5f, 3), 0.5f, reflectiveMaterial);
+            var transparentSphere = new Sphere(new Vector3(0.5f, -1.5f, 3), 0.5f, transparentMaterial);
+            var textureSphere = new Sphere(new Vector3(-1.5f, -1.5f, 3), 0.5f, sphereTextureMaterial);
+            var specialSphere = new Sphere(new Vector3(1.5f, -1.5f, 3), 0.5f, circuitryMaterial);
+
+            var reflectiveSphere1 = new Sphere(new Vector3(1.5f, -0.5f, 3), 0.5f, reflectiveMaterial);
+            var transparentSphere1 = new Sphere(new Vector3(-1.5f, -0.5f, 3), 0.5f, transparentMaterial);
+            var textureSphere1 = new Sphere(new Vector3(-0.5f, -0.5f, 3), 0.5f, sphereTextureMaterial);
+            var specialSphere1 = new Sphere(new Vector3(0.5f, -0.5f, 3), 0.5f, circuitryMaterial);
+
+            var reflectiveSphere2 = new Sphere(new Vector3(-1.5f, 0.5f, 3), 0.5f, reflectiveMaterial);
             var transparentSphere2 = new Sphere(new Vector3(1.5f, 0.5f, 3), 0.5f, transparentMaterial);
-            var textureSphere2 =     new Sphere(new Vector3(0.5f, 0.5f, 3), 0.5f, sphereTextureMaterial);
-            var specialSphere2 =     new Sphere(new Vector3(-0.5f, 0.5f, 3), 0.5f, circuitryMaterial);
-            
-            var reflectiveSphere3 =  new Sphere(new Vector3(0.5f, 1.5f, 3), 0.5f, reflectiveMaterial);
+            var textureSphere2 = new Sphere(new Vector3(0.5f, 0.5f, 3), 0.5f, sphereTextureMaterial);
+            var specialSphere2 = new Sphere(new Vector3(-0.5f, 0.5f, 3), 0.5f, circuitryMaterial);
+
+            var reflectiveSphere3 = new Sphere(new Vector3(0.5f, 1.5f, 3), 0.5f, reflectiveMaterial);
             var transparentSphere3 = new Sphere(new Vector3(-0.5f, 1.5f, 3), 0.5f, transparentMaterial);
-            var textureSphere3 =     new Sphere(new Vector3(1.5f, 1.5f, 3), 0.5f, sphereTextureMaterial);
-            var specialSphere3 =     new Sphere(new Vector3(-1.5f, 1.5f, 3), 0.5f, circuitryMaterial);
-            
+            var textureSphere3 = new Sphere(new Vector3(1.5f, 1.5f, 3), 0.5f, sphereTextureMaterial);
+            var specialSphere3 = new Sphere(new Vector3(-1.5f, 1.5f, 3), 0.5f, circuitryMaterial);
+
             objects.Add(new Plane(new Vector3(-2, 0, 0), new Vector3(1, 0, 0), reflectiveFloor));
             objects.Add(new Plane(new Vector3(2, 0, 0), new Vector3(-1, 0, 0), reflectiveFloor));
             objects.Add(new Plane(new Vector3(5, -2f, 0), new Vector3(0, 1, 0), reflectiveFloor));
@@ -111,12 +136,17 @@ namespace Aethra.RayTracer.Instructions
             objects.Add(transparentSphere3);
             objects.Add(textureSphere3);
             objects.Add(specialSphere3);
+            // objects.Add(new Sphere(new Vector3(1.5f, -1.5f, 2),0.1f, new EmissiveMaterial(FloatColor.Error, 10)));
 
             var sampler = new Sampler(new JitteredGenerator(0), new SquareDistributor(), 16, 32);
+
+            //var samplerLights = new Sampler(new RegularGenerator(), new SquareDistributor(), 25, 1);
+
             var camera = new PerspectiveCamera(renderTarget, new Vector3(0f, 0, -5), Vector3.Forward, Vector3.Up)
             {
                 Sampler = sampler,
-                //SpecialFloatColoring = (ray, hit) => FloatColor.FromVector(ray.Direction)
+                //SpecialColoring = (ray, hit) => FloatColor.FromNormal(hit.Normal)
+                MaxDepth = 5
             };
 
             Scene = new Scene(objects, camera,
@@ -124,15 +154,35 @@ namespace Aethra.RayTracer.Instructions
                 {
                     new PointLight
                     {
-                        Position = new Vector3(0, 0, 3),
-                        Color = FloatColor.White,
-                        Sampler = sampler
+                        Position = new Vector3(-1.5f, -1.5f, 1),
+                        Color = FloatColor.Green,
+                        // Sampler = samplerLights,
+                        Radius = 0,
+                        Intensity = 0.5f
                     },
                     new PointLight
                     {
-                        Position = new Vector3(0, 0, 0),
-                        Color = FloatColor.White / 2,
-                        Sampler = sampler
+                        Position = new Vector3(1.5f, 1.5f, 1),
+                        Color = FloatColor.Red,
+                        // Sampler = samplerLights,
+                        Radius = 0,
+                        Intensity = 0.6f
+                    },
+                    new PointLight
+                    {
+                        Position = new Vector3(1.5f, -1.5f, 1),
+                        Color = FloatColor.Blue,
+                        // Sampler = samplerLights,
+                        Radius = 0,
+                        Intensity = 0.8f
+                    },
+                    new PointLight
+                    {
+                        Position = new Vector3(-1.5f, 1.5f, 1),
+                        Color = FloatColor.Yellow,
+                        //  Sampler = samplerLights,
+                        Radius = 0,
+                        Intensity = 0.5f
                     },
                     // new PointLight
                     // {

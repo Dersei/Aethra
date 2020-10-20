@@ -38,8 +38,7 @@ namespace Aethra
             _canvas = _skiaContext.SkCanvas;
             _canvas.Clear(SKColors.Black);
             if (_canvas is null) throw new NullReferenceException(nameof(_canvas));
-            _instruction ??= new TwelfthInstruction();
-            PointerPressed += OnPointerPressed;
+            _instruction ??= new CrystalInSphere();
             PointerWheelChanged += OnPointerWheelChanged;
             base.EndInit();
         }
@@ -71,7 +70,7 @@ namespace Aethra
             return x2 *4;
         }
 
-        private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        private void DrawCircle(PointerPressedEventArgs e)
         {
             if (_canvas is null) throw new ArgumentNullException(nameof(_canvas));
             if (_instruction is null) throw new ArgumentNullException(nameof(_instruction));
@@ -82,7 +81,7 @@ namespace Aethra
             SKPaint paintFill = new SKPaint
             {
                 Style = SKPaintStyle.Fill,
-                Color = new SKColor((byte) r,(byte) g,(byte) b),
+                Color = new SKColor(r,g,b),
             };
 
             var point = e.GetPosition(this);
@@ -103,7 +102,6 @@ namespace Aethra
             var center = new Vector3(xy.midX, xy.midY, positionZ);
             var floatColor = new FloatColor(r/255f,g/255f,b/255f);
             _instruction.AddObject(new Sphere(center,
-                //GetRadius(40), new PhongMaterial(FloatColor.Red)));
                 GetRadius(_radius), new ReflectiveMaterial(floatColor, 0.2f, 0.5f, 1000, 0.3f)));
             InvalidateVisual();
         }
@@ -130,9 +128,16 @@ namespace Aethra
 
         protected override async void OnPointerPressed(PointerPressedEventArgs e)
         {
-            if (e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed)
+            var pointerUpdateKind = e.GetCurrentPoint(null).Properties.PointerUpdateKind;
+
+            switch (pointerUpdateKind)
             {
-                await SaveAsync($"output-raytracer{DateTime.Now:yyyy-dd-M--HH-mm-ss.fff}.png");
+                case PointerUpdateKind.RightButtonPressed:
+                    await SaveAsync($"output-raytracer{DateTime.Now:yyyy-dd-M--HH-mm-ss.fff}.png");
+                    break;
+                case PointerUpdateKind.LeftButtonPressed:
+                    DrawCircle(e);
+                    break;
             }
 
             base.OnPointerPressed(e);
@@ -143,13 +148,10 @@ namespace Aethra
             Timer.Start();
             _instruction ??= new TwelfthInstruction();
             _instruction.CreateScene(bitmap.Width, bitmap.Height, FloatColor.Black, true);
-            //await Task.Run(_instruction.Render);
-            //var height = bitmap.Height;
-            //var width = bitmap.Width;
 
             await Task.Run(() =>
             {
-                foreach (var isRunning in _instruction.Render( /*0, height/2, 0, width/2*/))
+                foreach (var isRunning in _instruction.Render())
                 {
                     if (isRunning)
                     {
@@ -163,39 +165,7 @@ namespace Aethra
                     }
                 }
             });
-            // var t2 = Task.Run(() =>
-            // {
-            //     foreach (var isRunning in _instruction.Render(height/2, height, 0, width/2))
-            //     {
-            //         if (!isRunning)
-            //         {
-            //             break;
-            //         }
-            //     }
-            // });
-            // var t3 = Task.Run(() =>
-            // {
-            //     foreach (var isRunning in _instruction.Render(0, height/2, width/2, width))
-            //     {
-            //         if (!isRunning)
-            //         {
-            //             break;
-            //         }
-            //     }
-            // });
-            // var t4 = Task.Run(() =>
-            // {
-            //     foreach (var isRunning in _instruction.Render(height/2, height, width/2, width))
-            //     {
-            //         if (!isRunning)
-            //         {
-            //             break;
-            //         }
-            //     }
-            // });
-            //
-            // await Task.WhenAll(t1, t2, t3, t4);
-
+        
             Assign(bitmap, _instruction);
             _skiaContext!.SkCanvas.DrawBitmap(bitmap, new SKPoint(0, 0));
             InvalidateVisual();

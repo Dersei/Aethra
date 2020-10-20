@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Aethra.RayTracer.Basic;
 using Aethra.RayTracer.Basic.Materials;
+using Aethra.RayTracer.Interfaces;
 using Aethra.RayTracer.Utils;
 
 namespace Aethra.RayTracer.Models
@@ -247,7 +248,7 @@ namespace Aethra.RayTracer.Models
 
             return vol;
         }
-
+        
         private class TempVertex
         {
             public readonly int Vertex;

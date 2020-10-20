@@ -4,7 +4,7 @@ namespace Aethra.RayTracer.Extensions
 {
     public static class FloatColorExtensions
     {
-        private static void RGBToHSVHelper(float offset, float dominantColor, float colorOne, float colorTwo, out float h,
+        private static void RgbToHsvHelper(float offset, float dominantColor, float colorOne, float colorTwo, out float h,
             out float s, out float v)
         {
             v = dominantColor;
@@ -45,17 +45,17 @@ namespace Aethra.RayTracer.Extensions
             }
         }
 
-        public static void ToHSV(this FloatColor rgbColor, out float h, out float s, out float v)
+        public static void ToHsv(this FloatColor rgbColor, out float h, out float s, out float v)
         {
             // when blue is highest valued
             if (rgbColor.B > rgbColor.G && rgbColor.B > rgbColor.R)
-                RGBToHSVHelper(4, rgbColor.B, rgbColor.R, rgbColor.G, out h, out s, out v);
+                RgbToHsvHelper(4, rgbColor.B, rgbColor.R, rgbColor.G, out h, out s, out v);
             //when green is highest valued
             else if (rgbColor.G > rgbColor.R)
-                RGBToHSVHelper(2, rgbColor.G, rgbColor.B, rgbColor.R, out h, out s, out v);
+                RgbToHsvHelper(2, rgbColor.G, rgbColor.B, rgbColor.R, out h, out s, out v);
             //when red is highest valued
             else
-                RGBToHSVHelper(0, rgbColor.R, rgbColor.G, rgbColor.B, out h, out s, out v);
+                RgbToHsvHelper(0, rgbColor.R, rgbColor.G, rgbColor.B, out h, out s, out v);
         }
 
        

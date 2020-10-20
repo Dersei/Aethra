@@ -15,7 +15,7 @@ using Aethra.RayTracer.Samplers.Generators;
 
 namespace Aethra.RayTracer.Instructions
 {
-    public class EleventhInstruction : IInstruction
+    public class CrystalInSphere : IInstruction
     {
         public Scene? Scene { private set; get; }
         public uint[,]? Result => Scene?.Camera.RenderTarget.Pixels;
@@ -58,7 +58,7 @@ namespace Aethra.RayTracer.Instructions
             //     AmbientPower = 1
             // };
 
-            var crystalMaterial = new PBRMaterial(FloatColor.White,
+            var crystalMaterial = new PbrMaterial(FloatColor.White,
                 Texture.LoadFrom(@"_Resources/Textures/crystal-green.png").ToInfo(1),
                 Texture.LoadFrom(@"_Resources/Textures/crystal-green.png").ToInfo(1),
                 Texture.LoadFrom(@"_Resources/Textures/crystal-roughness.png").ToInfo(1),
@@ -111,7 +111,7 @@ namespace Aethra.RayTracer.Instructions
             var sampler = new Sampler(new RegularGenerator(), new SquareDistributor(), 25, 1);
             var camera = new PerspectiveCamera(renderTarget, new Vector3(0f, 0, -5), Vector3.Forward, Vector3.Up)
             {
-              //  Sampler = sampler,
+                Sampler = sampler,
                 MaxDepth = 5,
                 ColorSpace = ColorSpace.Linear
             };
