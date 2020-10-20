@@ -1,0 +1,56 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Width="800" Height="550"
+        xmlns:aethra="clr-namespace:Aethra"
+        x:Class="Aethra.MainWindow"
+        Title="Aethra">
+        <Window.DataContext>
+                <aethra:DrawingDataContext></aethra:DrawingDataContext>
+        </Window.DataContext>
+        <Grid>
+            <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="18*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Height"/>
+            <TextBox x:Name="HeightText" Grid.Row="0" Grid.Column="1"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Width"/>
+            <TextBox x:Name="WidthText" Grid.Row="0" Grid.Column="3"/>
+            <Button x:Name="StartButton" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Stretch" Content="START"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Position Z"/>
+            <TextBox x:Name="PositionText" Grid.Row="2" Grid.Column="1" Text="{Binding Path=PositionZ}"/>
+            <Grid Grid.Row="2" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="R"/>
+                    <TextBox Grid.Column="1" Text="{Binding Path=R}"/>
+                    <TextBlock Grid.Column="2" Text="G"/>
+                    <TextBox Grid.Column="3" Text="{Binding Path=G}"/>
+                    <TextBlock Grid.Column="4" Text="B"/>
+                    <TextBox Grid.Column="5" Text="{Binding Path=B}"/>
+            </Grid>
+            <TextBlock Grid.Row="2" Grid.Column="3" Background="{Binding Path=CreatedColor}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></TextBlock>
+            <ProgressBar x:Name="RenderProgress" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" VerticalAlignment="Stretch" Foreground="Green"/>
+            <aethra:DrawingCanvas x:Name="Canvas" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Width="800" Height="450">
+                    <aethra:CursorGraphic x:Name="CursorGraphic" Width="{Binding Path=Width, ElementName=Canvas}" Height="{Binding Path=Height, ElementName=Canvas}"/>
+            </aethra:DrawingCanvas>
+
+    </Grid>
+</Window>
