@@ -68,32 +68,6 @@ namespace Aethra.RayTracer.Instructions
                 AmbientPower = 1
             };
 
-            // var bacteriaMaterial = new PBRMaterial(FloatColor.White,
-            //     Texture.LoadFrom(@"_Resources/Textures/Bacteria_001_COLOR.jpg").ToInfo(3),
-            //     Texture.LoadFrom(@"_Resources/Textures/Bacteria_001_COLOR.jpg").ToInfo(3),
-            //     Texture.LoadFrom(@"_Resources/Textures/Bacteria_001_SPEC.jpg").ToInfo(3),
-            //     Texture.LoadFrom(@"_Resources/Textures/Bacteria_001_NORM.jpg").ToInfo(3))
-            // {
-            //     EmissionFactor = 2,
-            //     DiffuseCoefficient = 1,
-            //     Specular = 10,
-            //     SpecularExponent = 50,
-            //     AmbientPower = 1
-            // };
-
-            // var abstractMaterial = new PBRMaterial(FloatColor.White,
-            //     Texture.LoadFrom(@"_Resources/Textures/Abstract_010_basecolor_green.jpg").ToInfo(3),
-            //     Texture.LoadFrom(@"_Resources/Textures/Abstract_010_basecolor_green.jpg").ToInfo(3),
-            //     Texture.LoadFrom(@"_Resources/Textures/Abstract_010_roughness.jpg").ToInfo(3),
-            //     Texture.LoadFrom(@"_Resources/Textures/Abstract_010_normal.jpg").ToInfo(3))
-            // {
-            //     EmissionFactor = 2,
-            //     DiffuseCoefficient = 1,
-            //     Specular = 10,
-            //     SpecularExponent = 50,
-            //     AmbientPower = 1
-            // };
-
             var reflectiveSphere = new Sphere(new Vector3(-0.5f, -1.5f, 3), 0.5f, reflectiveMaterial);
             var transparentSphere = new Sphere(new Vector3(0.5f, -1.5f, 3), 0.5f, transparentMaterial);
             var textureSphere = new Sphere(new Vector3(-1.5f, -1.5f, 3), 0.5f, sphereTextureMaterial);
@@ -114,12 +88,6 @@ namespace Aethra.RayTracer.Instructions
             var textureSphere3 = new Sphere(new Vector3(1.5f, 1.5f, 3), 0.5f, sphereTextureMaterial);
             var specialSphere3 = new Sphere(new Vector3(-1.5f, 1.5f, 3), 0.5f, circuitryMaterial);
 
-            objects.Add(new Plane(new Vector3(-2, 0, 0), new Vector3(1, 0, 0), reflectiveFloor));
-            objects.Add(new Plane(new Vector3(2, 0, 0), new Vector3(-1, 0, 0), reflectiveFloor));
-            objects.Add(new Plane(new Vector3(5, -2f, 0), new Vector3(0, 1, 0), reflectiveFloor));
-            objects.Add(new Plane(new Vector3(5, 2f, 0), new Vector3(0, -1, 0), reflectiveFloor));
-            objects.Add(new Plane(new Vector3(0, 2, 6), new Vector3(0, 0, -1), reflectiveFloor));
-            objects.Add(new Plane(new Vector3(0, 2, -8), new Vector3(0, 0, 1), reflectiveFloor));
             objects.Add(reflectiveSphere);
             objects.Add(transparentSphere);
             objects.Add(textureSphere);
@@ -136,17 +104,24 @@ namespace Aethra.RayTracer.Instructions
             objects.Add(transparentSphere3);
             objects.Add(textureSphere3);
             objects.Add(specialSphere3);
-            // objects.Add(new Sphere(new Vector3(1.5f, -1.5f, 2),0.1f, new EmissiveMaterial(FloatColor.Error, 10)));
+            objects.Add(new Plane(new Vector3(-2, 0, 0), new Vector3(1, 0, 0), reflectiveFloor));
+            objects.Add(new Plane(new Vector3(2, 0, 0), new Vector3(-1, 0, 0), reflectiveFloor));
+            objects.Add(new Plane(new Vector3(5, -2f, 0), new Vector3(0, 1, 0), reflectiveFloor));
+            objects.Add(new Plane(new Vector3(5, 2f, 0), new Vector3(0, -1, 0), reflectiveFloor));
+            objects.Add(new Plane(new Vector3(0, 2, 6), new Vector3(0, 0, -1), reflectiveFloor));
+            objects.Add(new Plane(new Vector3(0, 2, -8), new Vector3(0, 0, 1), reflectiveFloor));
 
             var sampler = new Sampler(new JitteredGenerator(0), new SquareDistributor(), 16, 32);
 
-            //var samplerLights = new Sampler(new RegularGenerator(), new SquareDistributor(), 25, 1);
+            var samplerLights = new Sampler(new RegularGenerator(), new SquareDistributor(), 25, 1);
 
             var camera = new PerspectiveCamera(renderTarget, new Vector3(0f, 0, -5), Vector3.Forward, Vector3.Up)
             {
-                Sampler = sampler,
+                //Sampler = sampler,
                 //SpecialColoring = (ray, hit) => FloatColor.FromNormal(hit.Normal)
-                MaxDepth = 5
+                MaxDepth = 5,
+                //ColorSpace = ColorSpace.Gamma
+                //SpecialColoring = (ray, hit) => FloatColor.FromVectorSafe(hit.Position)
             };
 
             Scene = new Scene(objects, camera,
@@ -156,7 +131,7 @@ namespace Aethra.RayTracer.Instructions
                     {
                         Position = new Vector3(-1.5f, -1.5f, 1),
                         Color = FloatColor.Green,
-                        // Sampler = samplerLights,
+                         Sampler = samplerLights,
                         Radius = 0,
                         Intensity = 0.5f
                     },
@@ -164,7 +139,7 @@ namespace Aethra.RayTracer.Instructions
                     {
                         Position = new Vector3(1.5f, 1.5f, 1),
                         Color = FloatColor.Red,
-                        // Sampler = samplerLights,
+                         Sampler = samplerLights,
                         Radius = 0,
                         Intensity = 0.6f
                     },
@@ -172,7 +147,7 @@ namespace Aethra.RayTracer.Instructions
                     {
                         Position = new Vector3(1.5f, -1.5f, 1),
                         Color = FloatColor.Blue,
-                        // Sampler = samplerLights,
+                         Sampler = samplerLights,
                         Radius = 0,
                         Intensity = 0.8f
                     },
@@ -180,7 +155,7 @@ namespace Aethra.RayTracer.Instructions
                     {
                         Position = new Vector3(-1.5f, 1.5f, 1),
                         Color = FloatColor.Yellow,
-                        //  Sampler = samplerLights,
+                         Sampler = samplerLights,
                         Radius = 0,
                         Intensity = 0.5f
                     },

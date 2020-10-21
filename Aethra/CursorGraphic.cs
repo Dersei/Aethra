@@ -27,14 +27,13 @@ namespace Aethra
             _canvas = _skiaContext.SkCanvas;
             _canvas.Clear(SKColors.Empty);
             if (_canvas is null) throw new NullReferenceException(nameof(_canvas));
-            //IsHitTestVisible = false;
             PointerMoved += OnPointerMoved;
             base.EndInit();
         }
 
         private void OnPointerMoved(object? sender, PointerEventArgs e)
         {
-            _canvas.Clear(SKColor.Empty);
+            _canvas!.Clear(SKColor.Empty);
             SKPaint paint = new SKPaint
             {
                 Style = SKPaintStyle.Stroke,

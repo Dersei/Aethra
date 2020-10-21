@@ -113,8 +113,8 @@ namespace Aethra
             var bitmap = new SKBitmap(width, height);
             if (width != (int) Width || height != (int) Height)
             {
-                double dpi = 96;
-                double scale = dpi / 96;
+                const double dpi = 96.0;
+                const double scale = dpi / 96;
                 _renderTarget = new RenderTargetBitmap(new PixelSize((int) (width * scale), (int) (height * scale)),
                     new Vector(dpi, dpi));
                 var context = _renderTarget.CreateDrawingContext(null);
@@ -173,13 +173,13 @@ namespace Aethra
             _bitmap = bitmap;
         }
 
-        private void DisplayTime(string info)
+        private static void DisplayTime(string info)
         {
             var messageBoxStandardWindow = MessageBoxManager.GetMessageBoxStandardWindow("Time", info);
             messageBoxStandardWindow.Show();
         }
 
-        private unsafe void Assign(SKBitmap bitmap, IInstruction instruction)
+        private static unsafe void Assign(SKBitmap bitmap, IInstruction instruction)
         {
             fixed (uint* ptr = instruction.Result)
             {
@@ -198,7 +198,7 @@ namespace Aethra
             data.SaveTo(stream);
         }
 
-        public Task<bool> SaveAsync(string path)
+        private Task<bool> SaveAsync(string path)
         {
             return Task.Run(() =>
             {

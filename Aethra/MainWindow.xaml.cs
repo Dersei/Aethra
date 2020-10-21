@@ -36,8 +36,6 @@ namespace Aethra
         
         private async void OnClick(object? sender, RoutedEventArgs e)
         {
-            //_canvas!.Height = double.Parse(_heightBox!.Text);
-            //_canvas!.Width = double.Parse(_widthBox!.Text);
             _renderProgress!.IsIndeterminate = true;
             _startButton!.IsEnabled = false;
             await _canvas!.Draw(int.Parse(_widthBox!.Text), int.Parse(_heightBox!.Text));

@@ -75,9 +75,9 @@ namespace Aethra.RayTracer.Basic.Textures.Generators
             return resultBitmap;
         }
 
-        public static Bitmap SierpinskyCarpet(int width, int height, Color color)
+        public static Bitmap SierpinskyCarpet(int width, int height, Color color, Color color2)
         {
-            return SierpinskyCarpet(width, height, (b) => color);
+            return SierpinskyCarpet(width, height, b => b ? color : color2);
         }
 
         public static Bitmap SierpinskyCarpet(int width, int height, Func<bool, Color> func)
@@ -108,7 +108,7 @@ namespace Aethra.RayTracer.Basic.Textures.Generators
             return resultBitmap;
         }
 
-        public static List<Color> GenerateColorPalette()
+        private static List<Color> GenerateColorPalette()
         {
             var retVal = new List<Color>();
             for (var i = 0; i <= 255; i++)

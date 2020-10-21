@@ -74,8 +74,20 @@ namespace Aethra.RayTracer.Basic
         {
             return new FloatColor(vector.X, vector.Y, vector.Z);
         }
+        
+        /// <summary>
+        /// Creates a new color from the vector.
+        /// </summary>
+        /// <param name="vector">Vector</param>
+        /// <returns></returns>
+        public static FloatColor FromVectorSafe(Vector3 vector)
+        {
+            vector = vector.Normalize();
+            vector = new Vector3(MathExtensions.Clamp01(vector.X),MathExtensions.Clamp01(vector.Y), MathExtensions.Clamp01(vector.Z));
+            return new FloatColor(vector.X, vector.Y, vector.Z);
+        }
 
-        public static FloatColor FromRGB(float r, float g, float b)
+        public static FloatColor FromRgb(float r, float g, float b)
         {
             return new FloatColor(r, g, b);
         }
@@ -180,7 +192,7 @@ namespace Aethra.RayTracer.Basic
         {
             return $"FloatColor - ({R}, {G}, {B}, {A})";
         }
-        
+
         public string ToString(string? format, IFormatProvider? formatProvider)
         {
             return
@@ -202,7 +214,7 @@ namespace Aethra.RayTracer.Basic
             t = MathExtensions.Clamp01(t);
             return LerpUnclamped(a, b, t);
         }
-        
+
         public float this[int index] =>
             index switch
             {
@@ -212,7 +224,7 @@ namespace Aethra.RayTracer.Basic
                 3 => A,
                 _ => throw new IndexOutOfRangeException("Invalid Color index(" + index + ")!")
             };
-        
+
         // Convert a set of HSV values to an RGB Color.
         public static FloatColor FromHsv(float h, float s, float v, bool hdr)
         {
@@ -261,6 +273,23 @@ namespace Aethra.RayTracer.Basic
             }
 
             return result;
+        }
+
+        public static FloatColor ConvertToSRgb(FloatColor value)
+        {
+            var r = value.R > 0.0031308f ? 1.055f * MathF.Pow(value.R, 1.0f / 2.4f) - 0.055f : 12.92f * value.R;
+            var g = value.G > 0.0031308f ? 1.055f * MathF.Pow(value.G, 1.0f / 2.4f) - 0.055f : 12.92f * value.G;
+            var b = value.B > 0.0031308f ? 1.055f * MathF.Pow(value.B, 1.0f / 2.4f) - 0.055f : 12.92f * value.B;
+            return new FloatColor(r, g, b);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FloatColor ConvertToGamma(FloatColor value)
+        {
+            var r = MathF.Pow(value.R, 1.0f / 2.2f);
+            var g = MathF.Pow(value.B, 1.0f / 2.2f);
+            var b = MathF.Pow(value.G, 1.0f / 2.2f);
+            return new FloatColor(r, g, b);
         }
     }
 }

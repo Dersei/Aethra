@@ -35,28 +35,6 @@ namespace Aethra.RayTracer.Instructions
             var renderTarget = new Framebuffer(width, height);
 
             var reflectiveFloor = new ReflectiveMaterial(FloatColor.White, 0.4f, 1, 300, 0.5f);
-            // var textureEarth = Texture.LoadFrom("_Resources/Textures/earthmap1k.jpg", true, true);
-            var textureSun = Texture.LoadFrom("_Resources/Textures/2k_sun.jpg");
-            // var pbrSun = new PBRMaterial(FloatColor.White, textureSun.ToInfo(), textureSun.ToInfo());
-            // var pbrEarth = new PBRMaterial(FloatColor.White,
-            //     Texture.LoadFrom("_Resources/Textures/2k_earth_daymap.jpg", true, true).ToInfo(),
-            //     null,
-            //     Texture.LoadFrom("_Resources/Textures/2k_earth_specular_map.tif", true, true).ToInfo(),
-            //     Texture.LoadFrom("_Resources/Textures/2k_earth_normal_map.tif", true, true).ToInfo()
-            // );
-
-            // var lavaMaterial = new PBRMaterial(FloatColor.White,
-            //     Texture.LoadFrom(@"_Resources/Textures/lava-albedo-smoothness.png").ToInfo(0.1f),
-            //     Texture.LoadFrom(@"_Resources/Textures/lava-emission.png").ToInfo(0.1f),
-            //     Texture.LoadFrom(@"_Resources/Textures/lava-albedo-smoothness.png").ToInfo(0.1f),
-            //     Texture.LoadFrom(@"_Resources/Textures/lava-normals.png").ToInfo(0.1f))
-            // {
-            //     EmissionFactor = 4,
-            //     DiffuseCoefficient = 1,
-            //     Specular = 10,
-            //     SpecularExponent = 50,
-            //     AmbientPower = 1
-            // };
 
             var crystalMaterial = new PbrMaterial(FloatColor.White,
                 Texture.LoadFrom(@"_Resources/Textures/crystal-green.png").ToInfo(1),
@@ -75,7 +53,6 @@ namespace Aethra.RayTracer.Instructions
             var transparentCrystal = new TransparentMaterial(FloatColor.White, 0.1f, 0, 0.3f, 1.05f, 0.9f);
             var transparentSphere = new TransparentMaterial(FloatColor.White, 0.1f, 0, 0.3f, 1.05f, 0.9f);
 
-            // var stars = Texture.LoadFrom(@"_Resources/Textures/StarSkybox046.png");
             var crystal = Model.LoadFromFile("_Resources/Models/crystal.obj", crystalMaterial, 1.5f);
             var crystal2 = Model.LoadFromFile("_Resources/Models/crystal.obj", reflectiveCrystal, 1.5f,
                 Vector3.Left * 1.5f, Vector3.Forward, 45);
@@ -100,12 +77,12 @@ namespace Aethra.RayTracer.Instructions
 
             foreach (var triangle in crystal2)
             {
-                //objects.Add(triangle);
+                objects.Add(triangle);
             }
 
             foreach (var triangle in crystal3)
             {
-               // objects.Add(triangle);
+                objects.Add(triangle);
             }
 
             var sampler = new Sampler(new RegularGenerator(), new SquareDistributor(), 25, 1);
@@ -113,7 +90,7 @@ namespace Aethra.RayTracer.Instructions
             {
                 Sampler = sampler,
                 MaxDepth = 5,
-                ColorSpace = ColorSpace.Linear
+                //ColorSpace = ColorSpace.Srgb,
             };
 
             Scene = new Scene(objects, camera,
@@ -124,7 +101,6 @@ namespace Aethra.RayTracer.Instructions
                         Position = new Vector3(0, 0, 5),
                         Color = FloatColor.White,
                         Intensity = 1
-                        // Sampler = sampler
                     }
                 },
                 FloatColor.Black);

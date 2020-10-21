@@ -108,23 +108,15 @@ namespace Aethra.RayTracer.Cameras
                     }
 
                     //pow( color, vec3(1.0/2.2) );
-                    color = ColorSpace switch
+                    RenderTarget[i, j] = ColorSpace switch
                     {
                         ColorSpace.Linear => color,
-                        ColorSpace.Gamma => new FloatColor(
-                            MathF.Pow(color.R, 1.0f / 2.2f),
-                            MathF.Pow(color.G, 1.0f / 2.2f),
-                            MathF.Pow(color.B, 1.0f / 2.2f)
-                        ),
-                        ColorSpace.Srgb => new FloatColor(
-                            ConvertToSRgb(color.R),
-                            ConvertToSRgb(color.G),
-                            ConvertToSRgb(color.B)
-                        ),
+                        ColorSpace.Gamma => FloatColor.ConvertToGamma(color),
+                        ColorSpace.Srgb => FloatColor.ConvertToSRgb(color),
                         _ => FloatColor.Error
                     };
 
-                    RenderTarget.SetPixel(i, j, color);
+                    
                 }
 
                 yield return true;
@@ -132,13 +124,7 @@ namespace Aethra.RayTracer.Cameras
 
             yield return false;
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static float ConvertToSRgb(float value)
-        {
-            return value > 0.0031308f ? 1.055f * MathF.Pow(value, 1.0f / 2.4f) - 0.055f : 12.92f * value;
-        }
-
+        
         public IEnumerable<bool> Render(int startHeight, int endHeight, int startWidth, int endWidth)
         {
             for (var j = startHeight; j < endHeight; j++)
