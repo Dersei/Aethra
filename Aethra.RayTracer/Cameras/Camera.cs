@@ -43,9 +43,9 @@ namespace Aethra.RayTracer.Cameras
 
         private void CalculateUvw()
         {
-            W = -Direction;
-            U = Up.Cross(-W);
-            V = W.Cross(-U);
+            W = Direction;
+            U = Up.Cross(W).Normalize();
+            V = W.Cross(U).Normalize();
         }
 
         protected Camera(Framebuffer renderTarget, Vector3 position, Vector3 direction, Vector3 up)

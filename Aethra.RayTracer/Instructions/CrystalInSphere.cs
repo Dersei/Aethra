@@ -70,27 +70,16 @@ namespace Aethra.RayTracer.Instructions
                 new Plane(new Vector3(0, 2, -8), new Vector3(0, 0, 1), reflectiveFloor),
                 new Sphere(Vector3.Zero, 1, transparentSphere)
             };
-            foreach (var triangle in crystal)
-            {
-                objects.Add(triangle);
-            }
-
-            foreach (var triangle in crystal2)
-            {
-                objects.Add(triangle);
-            }
-
-            foreach (var triangle in crystal3)
-            {
-                objects.Add(triangle);
-            }
-
+            
+            objects.Add(crystal);
+            objects.Add(crystal2);
+            objects.Add(crystal3);
+            
             var sampler = new Sampler(new RegularGenerator(), new SquareDistributor(), 25, 1);
             var camera = new PerspectiveCamera(renderTarget, new Vector3(0f, 0, -5), Vector3.Forward, Vector3.Up)
             {
                 Sampler = sampler,
                 MaxDepth = 5,
-                //ColorSpace = ColorSpace.Srgb,
             };
 
             Scene = new Scene(objects, camera,

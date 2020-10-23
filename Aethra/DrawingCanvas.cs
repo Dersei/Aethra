@@ -38,73 +38,73 @@ namespace Aethra
             _canvas = _skiaContext.SkCanvas;
             _canvas.Clear(SKColors.Black);
             if (_canvas is null) throw new NullReferenceException(nameof(_canvas));
-            _instruction ??= new CrystalInSphere();
-            PointerWheelChanged += OnPointerWheelChanged;
+            _instruction ??= new TwoSpheres();
+            //PointerWheelChanged += OnPointerWheelChanged;
             base.EndInit();
         }
 
-        private float _radius = 40;
+        // private float _radius = 40;
+        //
+        // private void ClampRadius(float value)
+        // {
+        //     _radius = _radius + value > 150 ? 150 : _radius + value < 1 ? 1 : _radius + value;
+        // }
+        //
+        // private void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
+        // {
+        //     if (e.Delta.Y > 0) ClampRadius(1);
+        //     if (e.Delta.Y < 0) ClampRadius(-1);
+        // }
 
-        private void ClampRadius(float value)
-        {
-            _radius = _radius + value > 150 ? 150 : _radius + value < 1 ? 1 : _radius + value;
-        }
+        // private (float midX, float midY) GetCenter(float x, float y)
+        // {
+        //     var ratio = (float) Width / (float) Height;
+        //     x = (-1.0f + (x + 0.5f) * (float) (2.0f / Width)) * ratio;
+        //     y = 1.0f - (y + 0.5f) * (float) (2.0f / Height);
+        //     return (x*MathF.Tan(60 * MathExtensions.Deg2Rad), y*MathF.Tan(60 * MathExtensions.Deg2Rad));
+        // }
+        //
+        // private float GetRadius(float x)
+        // {
+        //     var x2 = x / (float) Height;
+        //     return x2 *4;
+        // }
 
-        private void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
-        {
-            if (e.Delta.Y > 0) ClampRadius(1);
-            if (e.Delta.Y < 0) ClampRadius(-1);
-        }
-
-        private (float midX, float midY) GetCenter(float x, float y)
-        {
-            var ratio = (float) Width / (float) Height;
-            x = (-1.0f + (x + 0.5f) * (float) (2.0f / Width)) * ratio;
-            y = 1.0f - (y + 0.5f) * (float) (2.0f / Height);
-            return (x*MathF.Tan(60 * MathExtensions.Deg2Rad), y*MathF.Tan(60 * MathExtensions.Deg2Rad));
-        }
-
-        private float GetRadius(float x)
-        {
-            var x2 = x / (float) Height;
-            return x2 *4;
-        }
-
-        private void DrawCircle(PointerPressedEventArgs e)
-        {
-            if (_canvas is null) throw new ArgumentNullException(nameof(_canvas));
-            if (_instruction is null) throw new ArgumentNullException(nameof(_instruction));
-            var positionZ = DrawingDataContext.Instance.PositionZ;
-            var r = DrawingDataContext.Instance.R;
-            var g = DrawingDataContext.Instance.G;
-            var b = DrawingDataContext.Instance.B;
-            SKPaint paintFill = new SKPaint
-            {
-                Style = SKPaintStyle.Fill,
-                Color = new SKColor(r,g,b),
-            };
-
-            var point = e.GetPosition(this);
-            _canvas.DrawCircle((float) point.X, (float) point.Y, _radius, paintFill);
-            if (positionZ.IsNotZero())
-            {
-                SKPaint paintStroke = new SKPaint
-                {
-                    Style = SKPaintStyle.Stroke,
-                    Color = SKColors.White,
-                    StrokeWidth = MathF.Abs(positionZ)
-                };
-                
-                _canvas.DrawCircle((float) point.X, (float) point.Y, _radius - positionZ, paintStroke);
-            }
-
-            var xy = GetCenter((float) (point.X), (float) (point.Y));
-            var center = new Vector3(xy.midX, xy.midY, positionZ);
-            var floatColor = new FloatColor(r/255f,g/255f,b/255f);
-            _instruction.AddObject(new Sphere(center,
-                GetRadius(_radius), new ReflectiveMaterial(floatColor, 0.2f, 0.5f, 1000, 0.3f)));
-            InvalidateVisual();
-        }
+        // private void DrawCircle(PointerPressedEventArgs e)
+        // {
+        //     if (_canvas is null) throw new ArgumentNullException(nameof(_canvas));
+        //     if (_instruction is null) throw new ArgumentNullException(nameof(_instruction));
+        //     var positionZ = DrawingDataContext.Instance.PositionZ;
+        //     var r = DrawingDataContext.Instance.R;
+        //     var g = DrawingDataContext.Instance.G;
+        //     var b = DrawingDataContext.Instance.B;
+        //     SKPaint paintFill = new SKPaint
+        //     {
+        //         Style = SKPaintStyle.Fill,
+        //         Color = new SKColor(r,g,b),
+        //     };
+        //
+        //     var point = e.GetPosition(this);
+        //     _canvas.DrawCircle((float) point.X, (float) point.Y, _radius, paintFill);
+        //     if (positionZ.IsNotZero())
+        //     {
+        //         SKPaint paintStroke = new SKPaint
+        //         {
+        //             Style = SKPaintStyle.Stroke,
+        //             Color = SKColors.White,
+        //             StrokeWidth = MathF.Abs(positionZ)
+        //         };
+        //         
+        //         _canvas.DrawCircle((float) point.X, (float) point.Y, _radius - positionZ, paintStroke);
+        //     }
+        //
+        //     var xy = GetCenter((float) (point.X), (float) (point.Y));
+        //     var center = new Vector3(xy.midX, xy.midY, positionZ);
+        //     var floatColor = new FloatColor(r/255f,g/255f,b/255f);
+        //     _instruction.AddObject(new Sphere(center,
+        //         GetRadius(_radius), new ReflectiveMaterial(floatColor, 0.2f, 0.5f, 1000, 0.3f)));
+        //     InvalidateVisual();
+        // }
 
         private SKBitmap? _bitmap;
 
@@ -135,9 +135,9 @@ namespace Aethra
                 case PointerUpdateKind.RightButtonPressed:
                     await SaveAsync($"output-raytracer{DateTime.Now:yyyy-dd-M--HH-mm-ss.fff}.png");
                     break;
-                case PointerUpdateKind.LeftButtonPressed:
-                    DrawCircle(e);
-                    break;
+                // case PointerUpdateKind.LeftButtonPressed:
+                //     DrawCircle(e);
+                //     break;
             }
 
             base.OnPointerPressed(e);
@@ -146,7 +146,7 @@ namespace Aethra
         private async Task RenderResult(SKBitmap bitmap)
         {
             Timer.Start();
-            _instruction ??= new TwelfthInstruction();
+            _instruction ??= new TwoSpheres();
             _instruction.CreateScene(bitmap.Width, bitmap.Height, FloatColor.Black, true);
 
             await Task.Run(() =>
@@ -186,18 +186,7 @@ namespace Aethra
                 bitmap.SetPixels((IntPtr) ptr);
             }
         }
-
-
-        private void SaveBitmap()
-        {
-            // create an image and then get the PNG (or any other) encoded data
-            using var image = SKImage.FromBitmap(_bitmap);
-            using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-            // save the data to a stream
-            using var stream = File.OpenWrite($"raw-output-raytracer{DateTime.Now:yyyy-dd-M--HH-mm-ss.fff}.png");
-            data.SaveTo(stream);
-        }
-
+        
         private Task<bool> SaveAsync(string path)
         {
             return Task.Run(() =>
@@ -205,7 +194,6 @@ namespace Aethra
                 try
                 {
                     _renderTarget?.Save(path);
-                    SaveBitmap();
                 }
                 catch (Exception)
                 {

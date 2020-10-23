@@ -37,10 +37,6 @@ namespace Aethra.RayTracer.Instructions
 
             var reflectiveMaterial = new ReflectiveMaterial(FloatColor.White, 0.4f, 1, 300, 1f);
             var transparentMaterial = new TransparentMaterial(FloatColor.White, 0.1f, 0, 1, 3, 1);
-            // var redWallMaterial = new PhongMaterial(FloatColor.Red, 1, 0, 50, 1);
-            // var greenWallMaterial = new PhongMaterial(FloatColor.Green, 1, 0, 50, 1);
-            // var whiteWallMaterial = new PhongMaterial(FloatColor.White, 1, 0, 50, 1);
-            // var blueMaterial = new PhongMaterial(FloatColor.Blue, 0.7f, 8, 50, 1);
             var reflectiveFloor = new ReflectiveMaterial(FloatColor.White, 0.4f, 1, 300, 0.5f);
 
             var circuitryMaterial = new PbrMaterial(FloatColor.White,
@@ -117,7 +113,6 @@ namespace Aethra.RayTracer.Instructions
             {
                 Sampler = sampler,
                 MaxDepth = 4
-                //SpecialFloatColoring = (ray, hit) => FloatColor.FromVector(ray.Direction)
             };
 
             Scene = new Scene(objects, camera,
