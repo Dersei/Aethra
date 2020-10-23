@@ -19,8 +19,8 @@ namespace Aethra.RayTracer.Rendering
         
         public uint this[int i, int j]
         {
-            get => Pixels[i, j];
-            set => Pixels[i, j] = value;
+            get => Pixels[j, i];
+            set => Pixels[j, i] = value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

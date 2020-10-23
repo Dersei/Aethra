@@ -4,7 +4,7 @@ using Aethra.RayTracer.Rendering;
 
 namespace Aethra.RayTracer.Basic.Materials
 {
-    public class PBRMaterial : Material
+    public class PbrMaterial : Material
     {
         public float DiffuseCoefficient;
         public float Specular;
@@ -16,7 +16,7 @@ namespace Aethra.RayTracer.Basic.Materials
         public float EmissionFactor = 1;
 
 
-        public PBRMaterial(FloatColor color, TextureInfo? texture = null, TextureInfo? emissiveMap = null,
+        public PbrMaterial(FloatColor color, TextureInfo? texture = null, TextureInfo? emissiveMap = null,
             TextureInfo? specularMap = null, TextureInfo? normalMap = null)
         {
             Color = color;

@@ -7,7 +7,7 @@ namespace Aethra.RayTracer.Cameras
 {
     public class PerspectiveCamera : Camera
     {
-        public float Fov { get; } = 60f;
+        public float Fov { get; } = 30;
 
         public PerspectiveCamera(Framebuffer renderTarget, Vector3 position, Vector3 direction, Vector3 up) : base(
             renderTarget, position,
@@ -20,7 +20,7 @@ namespace Aethra.RayTracer.Cameras
             var (midX, midY) = GetCenter(x, y);
             midX *= MathF.Tan(Fov * MathExtensions.Deg2Rad);
             midY *= MathF.Tan(Fov * MathExtensions.Deg2Rad);
-            return new Ray(Position, (-5f * W + midX * U + midY * V).Normalize(), NearPlane, FarPlane);
+            return new Ray(Position, (W + midX * U + midY * V).Normalize(), NearPlane, FarPlane);
         }
     }
 }
